@@ -442,7 +442,7 @@
     <div class="password-box">
       <div class="lock-icon">🔐</div>
       <div class="pw-label">Sana özel bir sürpriz seni bekliyor...</div>
-      <input type="password" class="pw-input" id="pw-input" placeholder="• • • • • •" maxlength="10" autocomplete="off">
+      <input type="password" class="pw-input" id="pw-input" placeholder="• • • • • • • •" maxlength="10" autocomplete="off">
       <div class="pw-error" id="pw-error">Yanlış şifre canım, tekrar dene ♡</div>
       <button class="btn-enter" id="btn-enter">Gir ♡</button>
     </div>
@@ -497,29 +497,33 @@
 
   <div class="card-grid">
 
-    <!-- CARD 1: Days together -->
+    <!-- CARD 1: Real time together (total minus separation days) -->
     <div class="card">
-      <span class="card-icon">🌸</span>
-      <div class="card-title">Tanışma Günümüz</div>
-      <div class="counter-days" id="days-counter">0</div>
-      <div class="counter-days-lbl">gündür birlikteyiz</div>
-      <div class="card-content" style="text-align:center;margin-top:0.8rem;">
-        ✨ 07 Mart 2025'ten bu yana ✨
+      <span class="card-icon">💑</span>
+      <div class="card-title">Gerçekte Birlikte Geçirdiğimiz Süre</div>
+      <div class="live-counter">
+        <div class="cu-box"><span class="cu-val" id="r-days">00</span><span class="cu-lbl">Gün</span></div>
+        <div class="cu-box"><span class="cu-val" id="r-hours">00</span><span class="cu-lbl">Saat</span></div>
+        <div class="cu-box"><span class="cu-val" id="r-mins">00</span><span class="cu-lbl">Dakika</span></div>
+        <div class="cu-box"><span class="cu-val" id="r-secs">00</span><span class="cu-lbl">Saniye</span></div>
+      </div>
+      <div class="card-content" style="text-align:center;margin-top:0.85rem;font-size:0.85rem;">
+        Ayrı geçen günler çıkarıldı — her saniye kalbim seninle atıyor ♡
       </div>
     </div>
 
-    <!-- CARD 2: Live timer -->
+    <!-- CARD 2: Total time since we met -->
     <div class="card">
-      <span class="card-icon">⏰</span>
-      <div class="card-title">Birlikte Geçen Süre</div>
+      <span class="card-icon">🌸</span>
+      <div class="card-title">Seni Tanıyaldan Beri</div>
       <div class="live-counter">
-        <div class="cu-box"><span class="cu-val" id="c-days">00</span><span class="cu-lbl">Gün</span></div>
-        <div class="cu-box"><span class="cu-val" id="c-hours">00</span><span class="cu-lbl">Saat</span></div>
-        <div class="cu-box"><span class="cu-val" id="c-mins">00</span><span class="cu-lbl">Dakika</span></div>
-        <div class="cu-box"><span class="cu-val" id="c-secs">00</span><span class="cu-lbl">Saniye</span></div>
+        <div class="cu-box"><span class="cu-val" id="t-days">00</span><span class="cu-lbl">Gün</span></div>
+        <div class="cu-box"><span class="cu-val" id="t-hours">00</span><span class="cu-lbl">Saat</span></div>
+        <div class="cu-box"><span class="cu-val" id="t-mins">00</span><span class="cu-lbl">Dakika</span></div>
+        <div class="cu-box"><span class="cu-val" id="t-secs">00</span><span class="cu-lbl">Saniye</span></div>
       </div>
       <div class="card-content" style="text-align:center;margin-top:0.85rem;font-size:0.85rem;">
-        Her saniye kalbim seninle birlikte atıyor ♡
+        ✨ 07 Mart 2025'ten bu yana ✨
       </div>
     </div>
 
@@ -657,7 +661,7 @@ for (let i = 0; i < 28; i++) {
 // ─────────────────────────────────────────
 // PASSWORD
 // ─────────────────────────────────────────
-const PASSWORD = '070326';
+const PASSWORD = '07032025';
 const shakeKF = document.createElement('style');
 shakeKF.textContent = `@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}`;
 document.head.appendChild(shakeKF);
@@ -766,20 +770,36 @@ function showMainPage() {
 // COUNTER
 // ─────────────────────────────────────────
 const START = new Date('2025-03-07T00:00:00');
+// Ayrılık dönemleri: 1 Mayıs–31 Mayıs 2025 (31 gün) + 16 Ekim–20 Aralık 2025 (65 gün) = 96 gün
+const SEPARATION_MS = 96 * 24 * 3600 * 1000;
 function pad(n) { return String(n).padStart(2,'0'); }
 
 function updateCounter() {
-  const diff = Math.max(0, Date.now() - START.getTime());
-  const totalSec = Math.floor(diff / 1000);
-  const d = Math.floor(totalSec / 86400);
-  const h = Math.floor((totalSec % 86400) / 3600);
-  const m = Math.floor((totalSec % 3600)  / 60);
-  const s = totalSec % 60;
-  document.getElementById('days-counter').textContent = d;
-  document.getElementById('c-days').textContent  = pad(d);
-  document.getElementById('c-hours').textContent = pad(h);
-  document.getElementById('c-mins').textContent  = pad(m);
-  document.getElementById('c-secs').textContent  = pad(s);
+  const now = Date.now();
+
+  // Toplam tanışma süresi (07 Mart 2025'ten bu yana)
+  const totalDiff = Math.max(0, now - START.getTime());
+  const totalSec = Math.floor(totalDiff / 1000);
+  const td = Math.floor(totalSec / 86400);
+  const th = Math.floor((totalSec % 86400) / 3600);
+  const tm = Math.floor((totalSec % 3600)  / 60);
+  const ts = totalSec % 60;
+  document.getElementById('t-days').textContent  = pad(td);
+  document.getElementById('t-hours').textContent = pad(th);
+  document.getElementById('t-mins').textContent  = pad(tm);
+  document.getElementById('t-secs').textContent  = pad(ts);
+
+  // Gerçek birliktelik süresi (ayrılık günleri çıkarılmış)
+  const realDiff = Math.max(0, totalDiff - SEPARATION_MS);
+  const realSec = Math.floor(realDiff / 1000);
+  const rd = Math.floor(realSec / 86400);
+  const rh = Math.floor((realSec % 86400) / 3600);
+  const rm = Math.floor((realSec % 3600)  / 60);
+  const rs = realSec % 60;
+  document.getElementById('r-days').textContent  = pad(rd);
+  document.getElementById('r-hours').textContent = pad(rh);
+  document.getElementById('r-mins').textContent  = pad(rm);
+  document.getElementById('r-secs').textContent  = pad(rs);
 }
 
 function startCounter() { updateCounter(); setInterval(updateCounter, 1000); }
