@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Kod — Kader Website</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #FFF0F7, #FFE4F0);
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 1.5rem; padding: 2rem;
+    }
+    .card {
+      background: white; border-radius: 24px;
+      padding: 3rem; text-align: center;
+      box-shadow: 0 12px 48px rgba(201,75,122,0.15);
+      max-width: 420px; width: 100%;
+    }
+    h1 { color: #C94B7A; font-size: 1.6rem; margin-bottom: 0.3rem; }
+    p  { color: #B87090; font-size: 0.9rem; margin-bottom: 1.5rem; }
+    #qr-code { margin: 0 auto 1.5rem; display: inline-block; }
+    .url-box {
+      background: #FFF0F7; border: 1px solid #FFB6C8;
+      border-radius: 12px; padding: 0.75rem 1rem;
+      font-size: 0.85rem; color: #C94B7A;
+      word-break: break-all; margin-bottom: 1rem;
+    }
+    .hint { color: #B87090; font-size: 0.8rem; }
+    .bow { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
+    .mode-tabs {
+      display: flex; gap: 0.5rem; margin-bottom: 1.5rem; justify-content: center;
+    }
+    .tab-btn {
+      padding: 0.45rem 1.2rem; border-radius: 50px; border: 2px solid #FFB6C8;
+      background: white; color: #C94B7A; cursor: pointer; font-size: 0.85rem;
+      font-weight: 600; transition: all 0.2s;
+    }
+    .tab-btn.active { background: #C94B7A; color: white; border-color: #C94B7A; }
+    .custom-input {
+      display: flex; gap: 0.5rem; margin-bottom: 1.25rem;
+    }
+    .custom-input input {
+      flex: 1; padding: 0.65rem 1rem; border: 2px solid #FFB6C8;
+      border-radius: 50px; font-size: 0.85rem; color: #3D1B2E;
+      outline: none; transition: border-color 0.2s;
+    }
+    .custom-input input:focus { border-color: #C94B7A; }
+    .custom-input button {
+      padding: 0.65rem 1.2rem; background: #C94B7A; color: white;
+      border: none; border-radius: 50px; cursor: pointer; font-size: 0.85rem;
+      font-weight: 600; transition: opacity 0.2s;
+    }
+    .custom-input button:hover { opacity: 0.85; }
+    .download-btn {
+      display: inline-block; margin-top: 0.5rem;
+      padding: 0.6rem 1.5rem; background: linear-gradient(135deg, #FF85A1, #C94B7A);
+      color: white; border: none; border-radius: 50px; cursor: pointer;
+      font-size: 0.88rem; font-weight: 600; text-decoration: none;
+      box-shadow: 0 4px 14px rgba(201,75,122,0.35); transition: transform 0.2s;
+    }
+    .download-btn:hover { transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <span class="bow">🎀</span>
+    <h1>Kader'im için QR Kod ♡</h1>
+    <p>Bu QR kodu tara, sürpriz seni bekliyor!</p>
+
+    <div class="mode-tabs">
+      <button class="tab-btn active" onclick="setMode('local')">Yerel Sunucu</button>
+      <button class="tab-btn" onclick="setMode('github')">GitHub Pages</button>
+      <button class="tab-btn" onclick="setMode('custom')">Özel URL</button>
+    </div>
+
+    <!-- GitHub Pages URL input (hidden by default) -->
+    <div id="custom-url-row" class="custom-input" style="display:none;">
+      <input type="url" id="custom-url-input" placeholder="https://username.github.io/kader-website/">
+      <button onclick="applyCustomUrl()">Uygula</button>
+    </div>
+
+    <div id="qr-code"></div>
+    <div class="url-box" id="url-display">Yükleniyor...</div>
+
+    <div id="hint-local" class="hint">
+      ✨ Sunucuyu başlatmak için <strong>start-server.ps1</strong> çalıştır<br>
+      Sonra bu sayfayı aynı Wi-Fi'dan telefonunda tara
+    </div>
+    <div id="hint-github" class="hint" style="display:none;">
+      🌐 GitHub Pages URL — internet üzerinden her yerden erişilebilir!
+    </div>
+    <div id="hint-custom" class="hint" style="display:none;">
+      Kendi belirlediğin URL için QR kod
+    </div>
+
+    <br>
+    <button class="download-btn" onclick="downloadQR()">QR Kodu İndir ♡</button>
+  </div>
+
+  <script>
+    let qrInstance = null;
+    let currentMode = 'local';
+
+    function getLocalUrl() {
+      const host = location.hostname || '192.168.1.14';
+      const port = location.port || '8000';
+      return `http://${host}:${port}`;
+    }
+
+    function generateQR(url) {
+      const container = document.getElementById('qr-code');
+      container.innerHTML = '';
+      qrInstance = new QRCode(container, {
+        text:         url,
+        width:        220,
+        height:       220,
+        colorDark:    '#C94B7A',
+        colorLight:   '#FFFFFF',
+        correctLevel: QRCode.CorrectLevel.H
+      });
+      document.getElementById('url-display').textContent = url;
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.tab-btn').forEach((b, i) => {
+        b.classList.toggle('active', ['local','github','custom'][i] === mode);
+      });
+
+      // Show/hide GitHub/custom input
+      const showInput = (mode === 'github' || mode === 'custom');
+      document.getElementById('custom-url-row').style.display = showInput ? 'flex' : 'none';
+      document.getElementById('hint-local').style.display   = mode === 'local'   ? '' : 'none';
+      document.getElementById('hint-github').style.display  = mode === 'github'  ? '' : 'none';
+      document.getElementById('hint-custom').style.display  = mode === 'custom'  ? '' : 'none';
+
+      if (mode === 'github') {
+        document.getElementById('custom-url-input').placeholder = 'https://username.github.io/kader-website/';
+        const saved = localStorage.getItem('ghPagesUrl');
+        if (saved) {
+          document.getElementById('custom-url-input').value = saved;
+          generateQR(saved);
+        } else {
+          document.getElementById('url-display').textContent = 'GitHub Pages URL gir ve Uygula butonuna bas';
+        }
+      } else if (mode === 'custom') {
+        document.getElementById('custom-url-input').placeholder = 'https://...';
+        generateQR(getLocalUrl());
+      } else {
+        generateQR(getLocalUrl());
+      }
+    }
+
+    function applyCustomUrl() {
+      const url = document.getElementById('custom-url-input').value.trim();
+      if (!url) return;
+      if (currentMode === 'github') localStorage.setItem('ghPagesUrl', url);
+      generateQR(url);
+    }
+
+    function downloadQR() {
+      const canvas = document.querySelector('#qr-code canvas');
+      if (!canvas) { alert('QR kod yüklenemedi, lütfen bekle.'); return; }
+      // Re-draw with padding on a bigger canvas
+      const size = 300;
+      const pad  = 24;
+      const out  = document.createElement('canvas');
+      out.width  = size + pad * 2;
+      out.height = size + pad * 2;
+      const ctx  = out.getContext('2d');
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, out.width, out.height);
+      ctx.drawImage(canvas, pad, pad, size, size);
+      const link = document.createElement('a');
+      link.download = 'kader-qr.png';
+      link.href = out.toDataURL('image/png');
+      link.click();
+    }
+
+    // Init
+    generateQR(getLocalUrl());
+  </script>
+</body>
+</html>

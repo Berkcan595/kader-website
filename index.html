@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Sevgilim Kader ♡</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Quicksand:wght@300;400;500;600&family=Dancing+Script:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --blush: #FFB6C8;
+      --rose: #FF85A1;
+      --deep-rose: #C94B7A;
+      --cream: #FFF9F5;
+      --white: #FFFFFF;
+      --text-dark: #3D1B2E;
+      --text-mid: #7A3D5C;
+      --text-light: #B87090;
+      --card-bg: rgba(255,255,255,0.88);
+      --shadow: 0 8px 32px rgba(201,75,122,0.14);
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Quicksand', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      overflow-x: hidden;
+    }
+
+    .page { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .hidden { display: none !important; }
+
+    /* ──────────────── LANDING ──────────────── */
+    #page-landing {
+      background: linear-gradient(145deg, #FFF0F7 0%, #FFE4F0 45%, #FFF5F9 100%);
+      position: relative; overflow: hidden;
+    }
+
+    .bg-hearts { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .bg-heart {
+      position: absolute; opacity: 0; color: var(--blush);
+      font-size: var(--size, 18px);
+      animation: floatHeart var(--dur, 7s) var(--delay, 0s) infinite ease-in-out;
+    }
+    @keyframes floatHeart {
+      0%   { transform: translateY(110vh) rotate(-12deg); opacity: 0; }
+      10%  { opacity: 0.55; }
+      90%  { opacity: 0.35; }
+      100% { transform: translateY(-10vh) rotate(12deg); opacity: 0; }
+    }
+
+    /* Sparkle dots */
+    .sparkle {
+      position: absolute; border-radius: 50%;
+      background: var(--blush); opacity: 0;
+      animation: sparkleAnim var(--sd, 3s) var(--ss, 0s) infinite ease-in-out;
+    }
+    @keyframes sparkleAnim {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 0.6; transform: scale(1); }
+    }
+
+    .cat-ear { position: absolute; top: 0; width: 90px; height: 90px; }
+    .cat-ear-left { left: 0; }
+    .cat-ear-right { right: 0; transform: scaleX(-1); }
+
+    .landing-center {
+      position: relative; z-index: 10;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 1.8rem; padding: 2rem; text-align: center;
+    }
+
+    .main-bow { width: 130px; height: 85px; animation: bowSway 4s ease-in-out infinite; filter: drop-shadow(0 4px 12px rgba(201,75,122,0.25)); }
+    @keyframes bowSway {
+      0%, 100% { transform: rotate(-3deg) scale(1); }
+      50% { transform: rotate(3deg) scale(1.06); }
+    }
+
+    .love-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 6vw, 3.4rem);
+      font-style: italic; color: var(--deep-rose);
+      line-height: 1.25; max-width: 560px;
+      text-shadow: 0 2px 14px rgba(201,75,122,0.18);
+      animation: quoteAppear 1s ease-out;
+    }
+    @keyframes quoteAppear {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .love-quote-sub {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      color: var(--text-light); margin-top: -1.2rem;
+    }
+
+    .password-box {
+      background: rgba(255,255,255,0.92);
+      border: 1.5px solid rgba(255,182,200,0.6);
+      border-radius: 24px; padding: 2rem 2.5rem;
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+      box-shadow: 0 10px 40px rgba(201,75,122,0.12), 0 2px 8px rgba(255,133,161,0.1);
+      backdrop-filter: blur(12px); width: min(360px, 90vw);
+    }
+
+    .lock-icon { font-size: 2.2rem; animation: lockWobble 5s ease-in-out infinite; }
+    @keyframes lockWobble {
+      0%,100% { transform: rotate(0deg) scale(1); }
+      20%     { transform: rotate(-6deg) scale(1.05); }
+      40%     { transform: rotate(6deg) scale(1.05); }
+      60%     { transform: rotate(-3deg); }
+    }
+
+    .pw-label { font-size: 0.88rem; color: var(--text-light); letter-spacing: 0.06em; }
+    .pw-input {
+      width: 100%; padding: 0.8rem 1rem;
+      border: 2px solid var(--blush); border-radius: 50px;
+      font-family: 'Quicksand', sans-serif; font-size: 1.15rem;
+      text-align: center; letter-spacing: 0.35em;
+      color: var(--text-dark); background: var(--white); outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .pw-input:focus { border-color: var(--rose); box-shadow: 0 0 0 4px rgba(255,133,161,0.18); }
+
+    .pw-error { color: #d63060; font-size: 0.83rem; opacity: 0; transition: opacity 0.3s; }
+    .pw-error.show { opacity: 1; }
+
+    .btn-enter {
+      background: linear-gradient(135deg, var(--rose), var(--deep-rose));
+      color: white; border: none; border-radius: 50px;
+      padding: 0.8rem 2.8rem;
+      font-family: 'Quicksand', sans-serif; font-size: 1rem; font-weight: 600;
+      cursor: pointer; letter-spacing: 0.06em;
+      box-shadow: 0 4px 18px rgba(201,75,122,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-enter:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201,75,122,0.5); }
+    .btn-enter:active { transform: translateY(0); }
+
+    /* ──────────────── ANIMATION PAGE ──────────────── */
+    #page-animation {
+      background: linear-gradient(135deg, #FFD6E7, #FFB6C8, #FF85A1, #C94B7A);
+      background-size: 300% 300%;
+      animation: bgShift 3s ease infinite;
+      position: relative; overflow: hidden;
+    }
+    @keyframes bgShift {
+      0%,100% { background-position: 0% 50%; }
+      50%      { background-position: 100% 50%; }
+    }
+
+    .anim-center { position: relative; z-index: 10; text-align: center; padding: 1rem; }
+    .big-heart { font-size: 9rem; display: block; animation: bigBeat 0.75s ease-in-out infinite; }
+    @keyframes bigBeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+
+    .anim-msg {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      color: white; margin-top: 0.75rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .floating-text-container { position: absolute; inset: 0; pointer-events: none; }
+    .floating-text {
+      position: absolute;
+      font-family: 'Dancing Script', cursive;
+      font-size: var(--fs, 1.8rem); color: white; opacity: 0;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      animation: floatUp var(--dur, 4s) var(--delay, 0s) forwards ease-out;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(60px) scale(0.5) rotate(var(--rot,-5deg)); opacity: 0; }
+      20%  { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+      80%  { opacity: 1; }
+      100% { transform: translateY(-140px) scale(0.8) rotate(var(--rot,5deg)); opacity: 0; }
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: var(--w,10px); height: var(--h,10px);
+      background: var(--color,#FFB6C8); border-radius: var(--r,50%);
+      animation: confettiFall var(--dur,3s) var(--delay,0s) forwards linear;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(-60px) rotate(0deg) translateX(0); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(var(--spin,720deg)) translateX(var(--drift,30px)); opacity: 0; }
+    }
+
+    /* ──────────────── MAIN PAGE ──────────────── */
+    #page-main {
+      background: linear-gradient(160deg, #FFF5F8 0%, #FFEEF4 50%, #FFF9F5 100%);
+      min-height: 100vh; justify-content: flex-start;
+      align-items: stretch; padding-bottom: 4rem;
+    }
+
+    .main-header { text-align: center; padding: 2.5rem 1rem 1rem; }
+    .header-bow { width: 90px; height: 60px; margin-bottom: 0.5rem; filter: drop-shadow(0 3px 8px rgba(201,75,122,0.2)); }
+    .main-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 9vw, 4.5rem);
+      color: var(--deep-rose); font-weight: 400;
+    }
+    .deco-divider {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.75rem; margin: 0.6rem 0;
+    }
+    .deco-line { width: 60px; height: 1.5px; background: linear-gradient(to right, transparent, var(--rose)); }
+    .deco-line.rev { background: linear-gradient(to left, transparent, var(--rose)); }
+    .deco-bow-sm { width: 32px; height: 22px; }
+    .main-subtitle {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(1rem, 3vw, 1.35rem);
+      color: var(--text-light);
+    }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(300px,90vw),1fr));
+      gap: 1.4rem; padding: 1rem 1.5rem 2rem;
+      max-width: 1100px; margin: 0 auto; width: 100%;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,182,200,0.45);
+      border-radius: 24px; padding: 1.75rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      position: relative; overflow: hidden;
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.35s;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--blush), var(--rose), var(--deep-rose), var(--rose), var(--blush));
+      background-size: 200%;
+      animation: shimmer 3s linear infinite;
+    }
+    @keyframes shimmer { 0% { background-position: 0%; } 100% { background-position: 200%; } }
+    .card:hover { transform: translateY(-5px) scale(1.01); box-shadow: 0 16px 48px rgba(201,75,122,0.22); }
+
+    .card-icon { font-size: 2.4rem; margin-bottom: 0.65rem; display: block; }
+    .card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--deep-rose); font-weight: 600; margin-bottom: 0.5rem; }
+    .card-content { font-size: 0.93rem; color: var(--text-mid); line-height: 1.75; }
+
+    /* Counter */
+    .counter-days {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4.5rem; font-weight: 300;
+      color: var(--deep-rose); text-align: center;
+      line-height: 1; letter-spacing: -0.02em;
+    }
+    .counter-days-lbl { font-size: 0.95rem; color: var(--text-light); text-align: center; }
+
+    .live-counter {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 0.5rem; margin-top: 0.85rem;
+    }
+    .cu-box {
+      text-align: center;
+      background: linear-gradient(135deg, rgba(255,133,161,0.08), rgba(255,182,200,0.15));
+      border: 1px solid rgba(255,182,200,0.3);
+      border-radius: 14px; padding: 0.65rem 0.3rem;
+    }
+    .cu-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem; color: var(--deep-rose); font-weight: 600;
+      display: block; line-height: 1;
+    }
+    .cu-lbl { font-size: 0.6rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.07em; }
+
+    /* Gallery card */
+    .gallery-card { cursor: pointer; }
+    .gallery-preview {
+      border-radius: 16px; overflow: hidden;
+      position: relative; aspect-ratio: 16/9; margin-top: 0.85rem;
+    }
+    .gallery-preview img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .gallery-card:hover .gallery-preview img { transform: scale(1.06); }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(201,75,122,0.65) 0%, transparent 55%);
+      display: flex; align-items: flex-end; justify-content: center;
+      padding: 1rem; color: white;
+      font-family: 'Dancing Script', cursive; font-size: 1.35rem;
+    }
+
+    /* Love list */
+    .love-list { list-style: none; margin-top: 0.6rem; }
+    .love-list li {
+      padding: 0.38rem 0;
+      border-bottom: 1px dashed rgba(255,133,161,0.28);
+      font-size: 0.9rem; color: var(--text-mid);
+      display: flex; align-items: flex-start; gap: 0.5rem;
+    }
+    .love-list li::before { content: '♡'; color: var(--rose); flex-shrink: 0; }
+    .love-list li:last-child { border-bottom: none; }
+
+    /* Boyama card */
+    .boyama-img { width: 100%; border-radius: 16px; margin-top: 0.85rem; object-fit: cover; aspect-ratio: 4/3; }
+
+    /* Quote */
+    .quote-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-style: italic;
+      color: var(--deep-rose); text-align: center;
+      line-height: 1.65; margin-top: 0.85rem;
+    }
+
+    /* Moments */
+    .moment-list { list-style: none; margin-top: 0.6rem; }
+    .moment-list li {
+      padding: 0.38rem 0;
+      border-bottom: 1px dashed rgba(255,133,161,0.25);
+      font-size: 0.9rem; color: var(--text-mid);
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .moment-list li:last-child { border-bottom: none; }
+    .mi { font-size: 1.15rem; }
+
+    /* Card span 2 */
+    .card-wide { grid-column: span 2; }
+    @media (max-width: 650px) { .card-wide { grid-column: span 1; } }
+
+    /* ──────────────── GALLERY MODAL ──────────────── */
+    #page-gallery {
+      position: fixed; inset: 0;
+      background: rgba(25,5,18,0.97);
+      z-index: 200; display: flex;
+      flex-direction: column; align-items: center; justify-content: center;
+    }
+
+    .gallery-topbar {
+      position: absolute; top: 0; left: 0; right: 0;
+      padding: 1rem 1.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: linear-gradient(to bottom, rgba(25,5,18,0.7), transparent);
+      z-index: 201;
+    }
+    .gallery-title-bar {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.45rem; color: rgba(255,255,255,0.92);
+    }
+    .gallery-close-btn {
+      background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25);
+      color: white; border-radius: 50%; width: 42px; height: 42px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 1.2rem; transition: background 0.2s;
+    }
+    .gallery-close-btn:hover { background: rgba(255,255,255,0.28); }
+
+    .slideshow-wrap {
+      position: relative; width: 100%;
+      max-width: min(580px, 96vw);
+      touch-action: pan-y;
+    }
+
+    .slide { display: none; flex-direction: column; align-items: center; }
+    .slide.active { display: flex; animation: sldIn 0.45s cubic-bezier(.34,1.56,.64,1); }
+    @keyframes sldIn { from { opacity: 0; transform: scale(0.93); } to { opacity: 1; transform: scale(1); } }
+    .slide img { max-height: 68vh; max-width: 100%; object-fit: contain; border-radius: 18px; box-shadow: 0 8px 48px rgba(0,0,0,0.6); }
+    .slide-cap { color: rgba(255,255,255,0.82); font-family: 'Dancing Script', cursive; font-size: 1.2rem; margin-top: 0.65rem; }
+
+    .sl-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28);
+      color: white; border-radius: 50%; width: 46px; height: 46px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 1.5rem; transition: background 0.2s;
+      z-index: 5;
+    }
+    .sl-nav:hover { background: rgba(255,255,255,0.3); }
+    .sl-prev { left: -24px; }
+    .sl-next { right: -24px; }
+    @media (max-width: 640px) { .sl-prev { left: 6px; } .sl-next { right: 6px; } }
+
+    .gallery-dots {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 6px; margin-top: 1rem; max-width: 320px; padding: 0 1rem;
+    }
+    .g-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.25); cursor: pointer;
+      transition: background 0.25s, transform 0.25s;
+    }
+    .g-dot.active { background: var(--rose); transform: scale(1.4); }
+
+    .gallery-ctr {
+      position: absolute; bottom: 1.2rem; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.55); font-size: 0.85rem;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--cream); }
+    ::-webkit-scrollbar-thumb { background: var(--blush); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     PAGE 1 ▸ LANDING
+═══════════════════════════════════════ -->
+<div id="page-landing" class="page">
+
+  <!-- Cat ear accents -->
+  <svg class="cat-ear cat-ear-left" viewBox="0 0 100 100" fill="none">
+    <polygon points="0,0 75,0 0,75" fill="#FFB6C8" opacity="0.45"/>
+    <polygon points="0,0 48,0 0,48" fill="#FF85A1" opacity="0.35"/>
+  </svg>
+  <svg class="cat-ear cat-ear-right" viewBox="0 0 100 100" fill="none">
+    <polygon points="0,0 75,0 0,75" fill="#FFB6C8" opacity="0.45"/>
+    <polygon points="0,0 48,0 0,48" fill="#FF85A1" opacity="0.35"/>
+  </svg>
+
+  <!-- Animated hearts background -->
+  <div class="bg-hearts" id="bg-hearts"></div>
+
+  <div class="landing-center">
+
+    <!-- Hello Kitty bow -->
+    <svg class="main-bow" viewBox="0 0 180 110" fill="none">
+      <ellipse cx="48" cy="55" rx="44" ry="32" fill="#FFB6C8"/>
+      <ellipse cx="42" cy="47" rx="22" ry="15" fill="white" opacity="0.38"/>
+      <ellipse cx="132" cy="55" rx="44" ry="32" fill="#FFB6C8"/>
+      <ellipse cx="138" cy="47" rx="22" ry="15" fill="white" opacity="0.38"/>
+      <ellipse cx="90" cy="55" rx="16" ry="16" fill="#FF85A1"/>
+      <ellipse cx="90" cy="48" rx="8" ry="7" fill="white" opacity="0.38"/>
+      <path d="M76 64 Q55 90 38 97" stroke="#FFB6C8" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <path d="M104 64 Q125 90 142 97" stroke="#FFB6C8" stroke-width="7" stroke-linecap="round" fill="none"/>
+    </svg>
+
+    <!-- Random love message -->
+    <div>
+      <div class="love-quote" id="love-quote">Hoş geldin bitanem</div>
+      <div class="love-quote-sub" id="love-quote-sub">Seni çok seviyorum ♡</div>
+    </div>
+
+    <!-- Password -->
+    <div class="password-box">
+      <div class="lock-icon">🔐</div>
+      <div class="pw-label">Sana özel bir sürpriz seni bekliyor...</div>
+      <input type="password" class="pw-input" id="pw-input" placeholder="• • • • • •" maxlength="10" autocomplete="off">
+      <div class="pw-error" id="pw-error">Yanlış şifre canım, tekrar dene ♡</div>
+      <button class="btn-enter" id="btn-enter">Gir ♡</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE 2 ▸ ANIMATION
+═══════════════════════════════════════ -->
+<div id="page-animation" class="page hidden">
+  <div class="floating-text-container" id="float-texts"></div>
+  <div id="confetti-wrap" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1;"></div>
+  <div class="anim-center" style="z-index:2;">
+    <span class="big-heart">♥</span>
+    <div class="anim-msg">Seni çok seviyorum Kader'im ♡</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE 3 ▸ MAIN
+═══════════════════════════════════════ -->
+<div id="page-main" class="page hidden">
+
+  <div class="main-header">
+    <!-- Small bow -->
+    <svg class="header-bow" viewBox="0 0 180 110" fill="none">
+      <ellipse cx="48" cy="55" rx="44" ry="32" fill="#FFB6C8" opacity="0.85"/>
+      <ellipse cx="42" cy="47" rx="22" ry="15" fill="white" opacity="0.35"/>
+      <ellipse cx="132" cy="55" rx="44" ry="32" fill="#FFB6C8" opacity="0.85"/>
+      <ellipse cx="138" cy="47" rx="22" ry="15" fill="white" opacity="0.35"/>
+      <ellipse cx="90" cy="55" rx="16" ry="16" fill="#FF85A1"/>
+      <ellipse cx="90" cy="48" rx="8" ry="7" fill="white" opacity="0.35"/>
+      <path d="M76 64 Q55 90 38 97" stroke="#FFB6C8" stroke-width="7" stroke-linecap="round" fill="none"/>
+      <path d="M104 64 Q125 90 142 97" stroke="#FFB6C8" stroke-width="7" stroke-linecap="round" fill="none"/>
+    </svg>
+
+    <div class="main-title">Kader'im ♡</div>
+
+    <div class="deco-divider">
+      <div class="deco-line rev"></div>
+      <svg class="deco-bow-sm" viewBox="0 0 180 110" fill="none">
+        <ellipse cx="48" cy="55" rx="44" ry="32" fill="#FFB6C8"/>
+        <ellipse cx="132" cy="55" rx="44" ry="32" fill="#FFB6C8"/>
+        <ellipse cx="90" cy="55" rx="16" ry="16" fill="#FF85A1"/>
+      </svg>
+      <div class="deco-line"></div>
+    </div>
+
+    <div class="main-subtitle">Seninle geçen her an bir hazine</div>
+  </div>
+
+  <div class="card-grid">
+
+    <!-- CARD 1: Days together -->
+    <div class="card">
+      <span class="card-icon">🌸</span>
+      <div class="card-title">Tanışma Günümüz</div>
+      <div class="counter-days" id="days-counter">0</div>
+      <div class="counter-days-lbl">gündür birlikteyiz</div>
+      <div class="card-content" style="text-align:center;margin-top:0.8rem;">
+        ✨ 07 Mart 2025'ten bu yana ✨
+      </div>
+    </div>
+
+    <!-- CARD 2: Live timer -->
+    <div class="card">
+      <span class="card-icon">⏰</span>
+      <div class="card-title">Birlikte Geçen Süre</div>
+      <div class="live-counter">
+        <div class="cu-box"><span class="cu-val" id="c-days">00</span><span class="cu-lbl">Gün</span></div>
+        <div class="cu-box"><span class="cu-val" id="c-hours">00</span><span class="cu-lbl">Saat</span></div>
+        <div class="cu-box"><span class="cu-val" id="c-mins">00</span><span class="cu-lbl">Dakika</span></div>
+        <div class="cu-box"><span class="cu-val" id="c-secs">00</span><span class="cu-lbl">Saniye</span></div>
+      </div>
+      <div class="card-content" style="text-align:center;margin-top:0.85rem;font-size:0.85rem;">
+        Her saniye kalbim seninle birlikte atıyor ♡
+      </div>
+    </div>
+
+    <!-- CARD 3: Photo gallery -->
+    <div class="card gallery-card" onclick="openGallery()">
+      <span class="card-icon">📸</span>
+      <div class="card-title">Fotoğraf Galerimiz</div>
+      <div class="card-content">Birlikte yaşadığımız güzel anlara bak...</div>
+      <div class="gallery-preview">
+        <img src="images/1776547146507_b51eadc0.jpeg" alt="Galata Kulesi" loading="lazy">
+        <div class="gallery-overlay">17 Fotoğraf — Tıkla ♡</div>
+      </div>
+    </div>
+
+    <!-- CARD 4: Future -->
+    <div class="card">
+      <span class="card-icon">🌙</span>
+      <div class="card-title">Gelecekte Seninle...</div>
+      <div class="quote-text">
+        "Seninle geçireceğim her günü, her yılı dört gözle bekliyorum. Elimden tutup dünyayı birlikte keşfedelim. Her sabah yanımda sen olduğun sürece hayat mükemmeldir."
+      </div>
+      <div class="card-content" style="text-align:center;margin-top:1rem;">
+        💫 Seninle her şey daha güzel 💫
+      </div>
+    </div>
+
+    <!-- CARD 5: Boyama date -->
+    <div class="card">
+      <span class="card-icon">🎨</span>
+      <div class="card-title">Boyama Datemiz</div>
+      <img class="boyama-img" src="images/1776547186178_04c1b6e4.jpeg" alt="Boyama Date" loading="lazy">
+      <div class="card-content" style="margin-top:0.85rem;">
+        O gün seninle oturmuş boyama yaparken içimde ne çok şey hissettim...
+        Sade ve güzeldi, tıpkı senin gibi. ♡
+      </div>
+    </div>
+
+    <!-- CARD 6: Why I love you -->
+    <div class="card">
+      <span class="card-icon">💝</span>
+      <div class="card-title">Seni Sevmemin Nedenleri</div>
+      <ul class="love-list">
+        <li>Gülüşün her şeyi güzelleştiriyor</li>
+        <li>Bakışlarında tüm dünyam duruyor</li>
+        <li>Varlığınla her anım anlamlı oluyor</li>
+        <li>Saçlarının kokusu aklımdan gitmiyor</li>
+        <li>Sesini duyunca kalbim hızlanıyor</li>
+        <li>İçindeki sıcaklık beni ısıtıyor</li>
+        <li>Seninle gülerken hayat çok güzel</li>
+        <li>Her halini seviyorum, her zaman</li>
+        <li>Sen benim favori insanımsın</li>
+        <li>Aşkın beni her gün daha iyi yapıyor</li>
+      </ul>
+    </div>
+
+    <!-- CARD 7: Special moments -->
+    <div class="card">
+      <span class="card-icon">✨</span>
+      <div class="card-title">Özel Anlarımız</div>
+      <ul class="moment-list">
+        <li><span class="mi">🗼</span> Galata Kulesi'ndeki anlar</li>
+        <li><span class="mi">⛵</span> Vapurda gün batımı izlerken</li>
+        <li><span class="mi">🌳</span> Parka yürüyüşlerimiz</li>
+        <li><span class="mi">🎨</span> Birlikte boyama yaparken</li>
+        <li><span class="mi">🤗</span> Sarılıp kaldığımız anlar</li>
+        <li><span class="mi">💋</span> Özel öpücüklerimiz</li>
+        <li><span class="mi">☕</span> Kafede yan yana oturmak</li>
+        <li><span class="mi">📸</span> Birlikte çektiğimiz selfie'ler</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     PAGE 4 ▸ GALLERY MODAL
+═══════════════════════════════════════ -->
+<div id="page-gallery" class="hidden">
+  <div class="gallery-topbar">
+    <div class="gallery-title-bar">♡ Fotoğraflarımız</div>
+    <button class="gallery-close-btn" onclick="closeGallery()">✕</button>
+  </div>
+  <div class="slideshow-wrap" id="slideshow-wrap"></div>
+  <div class="gallery-dots" id="gallery-dots"></div>
+  <div class="gallery-ctr" id="gallery-ctr">1 / 17</div>
+</div>
+
+<script>
+// ─────────────────────────────────────────
+// LOVE MESSAGES
+// ─────────────────────────────────────────
+const LOVE_MSGS = [
+  { main: "Hoş geldin bitanem",               sub: "Seni çok özledim ♡" },
+  { main: "Hayatımın anlamısın",               sub: "Seninle her şey güzel ♡" },
+  { main: "Dünya güzelim, hoş geldin",         sub: "Gülüşünü çok özledim ♡" },
+  { main: "Kalbimin sahibi geldi",             sub: "Sen benim her şeyimsin ♡" },
+  { main: "Canım benim",                       sub: "Varlığın beni mutlu ediyor ♡" },
+  { main: "Seni çok özledim",                  sub: "Gelmeni dört gözle bekliyordum ♡" },
+  { main: "Güzelim benim, hoş geldin",         sub: "Seni görmek en büyük mutluluğum ♡" },
+  { main: "Sevgilim hoş geldin",               sub: "Kalbim seninle birlikte atıyor ♡" },
+  { main: "Kaderim sensin",                    sub: "Adın bile beni gülümsetiyor ♡" },
+  { main: "Seninle her an güzel",              sub: "Bu sayfa yalnızca sana özel ♡" },
+  { main: "Aşkım, hoş geldin",                 sub: "Sonsuz sevgiyle bekliyordum ♡" },
+  { main: "En güzel anlar hep seninle",        sub: "Seni çok seviyorum ♡" },
+  { main: "Varlığın bir armağan",              sub: "Hayatıma girdiğin için şükrediyorum ♡" },
+  { main: "Göz bebeğim geldi",                 sub: "Gülüşünü özlemişim ♡" },
+  { main: "Her bakışın bir şiir gibi",         sub: "Sen benim en güzel şiirimsin ♡" },
+  { main: "İki kalbim sensin",                 sub: "Seninle olmak cennete benziyor ♡" },
+  { main: "Sevgilim, canım, her şeyim",        sub: "Hoş geldin dünya güzelim ♡" },
+  { main: "Gülüşünle dünyam aydınlanıyor",     sub: "Seni çok ama çok seviyorum ♡" },
+  { main: "Seni sevmek en güzel şey",          sub: "Seninle her gün bir hediye ♡" },
+  { main: "Kaderim ve kalbim sensin",          sub: "Seninle sonsuzluğa ♡" }
+];
+
+const randomMsg = LOVE_MSGS[Math.floor(Math.random() * LOVE_MSGS.length)];
+document.getElementById('love-quote').textContent   = randomMsg.main;
+document.getElementById('love-quote-sub').textContent = randomMsg.sub;
+
+// ─────────────────────────────────────────
+// FLOATING HEARTS (LANDING BG)
+// ─────────────────────────────────────────
+const heartChars = ['♡','♥','❤','💕','💗','💖','💓'];
+const bgHeartsEl = document.getElementById('bg-hearts');
+for (let i = 0; i < 28; i++) {
+  const h = document.createElement('div');
+  h.className = 'bg-heart';
+  h.textContent = heartChars[i % heartChars.length];
+  h.style.left     = (Math.random() * 100) + 'vw';
+  h.style.setProperty('--dur',   (5 + Math.random() * 9) + 's');
+  h.style.setProperty('--delay', (Math.random() * 9)     + 's');
+  h.style.setProperty('--size',  (13 + Math.random() * 22) + 'px');
+  bgHeartsEl.appendChild(h);
+}
+
+// ─────────────────────────────────────────
+// PASSWORD
+// ─────────────────────────────────────────
+const PASSWORD = '070326';
+const shakeKF = document.createElement('style');
+shakeKF.textContent = `@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}`;
+document.head.appendChild(shakeKF);
+
+function checkPassword() {
+  const val = document.getElementById('pw-input').value.trim();
+  const errEl = document.getElementById('pw-error');
+  if (val === PASSWORD) {
+    errEl.classList.remove('show');
+    startAnimationPage();
+  } else {
+    errEl.classList.add('show');
+    const inp = document.getElementById('pw-input');
+    inp.style.borderColor = '#d63060';
+    inp.style.animation = 'shake 0.45s ease';
+    setTimeout(() => { inp.style.borderColor = ''; inp.style.animation = ''; }, 500);
+  }
+}
+document.getElementById('btn-enter').addEventListener('click', checkPassword);
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkPassword(); });
+
+// ─────────────────────────────────────────
+// ANIMATION PAGE
+// ─────────────────────────────────────────
+function startAnimationPage() {
+  document.getElementById('page-landing').classList.add('hidden');
+  document.getElementById('page-animation').classList.remove('hidden');
+
+  // Floating texts
+  const ftContainer = document.getElementById('float-texts');
+  const ftTexts = [
+    'Seni çok seviyorum','Kaderim sensin','Aşkım ♡',
+    'Seni çok seviyorum','Dünya güzelim','Seninle her an güzel',
+    'Canım benim','Kalbim senin ♡','Seni çok seviyorum',
+    'Her şeyimsin','Seni seviyorum ♡','Aşkım benim',
+    'Sana özel ♡','Sevgilim','Varlığın bir armağan'
+  ];
+  ftTexts.forEach((txt, i) => {
+    const el = document.createElement('div');
+    el.className = 'floating-text';
+    el.textContent = txt;
+    el.style.left  = (4 + Math.random() * 82) + 'vw';
+    el.style.top   = (8 + Math.random() * 72) + 'vh';
+    el.style.setProperty('--dur',   (2.5 + Math.random() * 2) + 's');
+    el.style.setProperty('--delay', (i * 0.22) + 's');
+    el.style.setProperty('--fs',    (1.1 + Math.random() * 1.3) + 'rem');
+    el.style.setProperty('--rot',   ((Math.random() > 0.5 ? '' : '-') + (3 + Math.random() * 8)) + 'deg');
+    ftContainer.appendChild(el);
+  });
+
+  // Confetti
+  spawnConfetti();
+
+  // Auto-advance to main
+  setTimeout(showMainPage, 3800);
+}
+
+// ─────────────────────────────────────────
+// CONFETTI
+// ─────────────────────────────────────────
+function spawnConfetti() {
+  const wrap = document.getElementById('confetti-wrap');
+  const colors = ['#FFB6C8','#FF85A1','#C94B7A','#FFD6E7','#ffffff','#FFDDE8','#FF4D79','#FFE0F0'];
+  for (let i = 0; i < 130; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    const isRect = Math.random() > 0.45;
+    const w = (6 + Math.random() * 10) + 'px';
+    p.style.left = (Math.random() * 100) + 'vw';
+    p.style.top  = '-30px';
+    p.style.setProperty('--w',     w);
+    p.style.setProperty('--h',     isRect ? (10 + Math.random() * 10) + 'px' : w);
+    p.style.setProperty('--color', colors[Math.floor(Math.random() * colors.length)]);
+    p.style.setProperty('--r',     isRect ? '3px' : '50%');
+    p.style.setProperty('--dur',   (2 + Math.random() * 2.5) + 's');
+    p.style.setProperty('--delay', (Math.random() * 1.5)     + 's');
+    const dir = Math.random() > 0.5 ? '' : '-';
+    p.style.setProperty('--spin',  dir + (360 + Math.floor(Math.random() * 360)) + 'deg');
+    p.style.setProperty('--drift', (Math.random() > 0.5 ? '' : '-') + (15 + Math.random() * 90) + 'px');
+    wrap.appendChild(p);
+  }
+}
+
+// ─────────────────────────────────────────
+// MAIN PAGE
+// ─────────────────────────────────────────
+function showMainPage() {
+  document.getElementById('page-animation').classList.add('hidden');
+  const main = document.getElementById('page-main');
+  main.classList.remove('hidden');
+  startCounter();
+
+  // Staggered card entrance
+  document.querySelectorAll('.card').forEach((card, i) => {
+    card.style.opacity   = '0';
+    card.style.transform = 'translateY(28px)';
+    setTimeout(() => {
+      card.style.transition = 'opacity 0.55s ease, transform 0.55s cubic-bezier(.34,1.56,.64,1)';
+      card.style.opacity   = '1';
+      card.style.transform = 'translateY(0)';
+    }, i * 110 + 80);
+  });
+}
+
+// ─────────────────────────────────────────
+// COUNTER
+// ─────────────────────────────────────────
+const START = new Date('2025-03-07T00:00:00');
+function pad(n) { return String(n).padStart(2,'0'); }
+
+function updateCounter() {
+  const diff = Math.max(0, Date.now() - START.getTime());
+  const totalSec = Math.floor(diff / 1000);
+  const d = Math.floor(totalSec / 86400);
+  const h = Math.floor((totalSec % 86400) / 3600);
+  const m = Math.floor((totalSec % 3600)  / 60);
+  const s = totalSec % 60;
+  document.getElementById('days-counter').textContent = d;
+  document.getElementById('c-days').textContent  = pad(d);
+  document.getElementById('c-hours').textContent = pad(h);
+  document.getElementById('c-mins').textContent  = pad(m);
+  document.getElementById('c-secs').textContent  = pad(s);
+}
+
+function startCounter() { updateCounter(); setInterval(updateCounter, 1000); }
+
+// ─────────────────────────────────────────
+// GALLERY
+// ─────────────────────────────────────────
+const PHOTOS = [
+  { src:'images/1776547146507_b51eadc0.jpeg', cap:'Galata Kulesi ♡' },
+  { src:'images/1776547146515_75f0d989.jpeg', cap:'Vapurda gün batımı ♡' },
+  { src:'images/1776547146519_50f9a54a.jpeg', cap:'Parkta yürürken ♡' },
+  { src:'images/1776547146525_1b9ff039.jpeg', cap:'Sarılırken ♡' },
+  { src:'images/1776547146529_0a4d0c49.jpeg', cap:'Boyama datemiz ♡' },
+  { src:'images/1776547146532_caff4acd.jpeg', cap:'Bahçede ♡' },
+  { src:'images/1776547164111_6a3eaa5d.jpeg', cap:'Kaplan maske selfie ♡' },
+  { src:'images/1776547164120_aed64dcd.jpeg', cap:'Dış mekanda sarılırken ♡' },
+  { src:'images/1776547164123_4248a347.jpeg', cap:'Siyah beyaz anımız ♡' },
+  { src:'images/1776547164126_7c15bbce.jpeg', cap:'Yazlıkta sarılırken ♡' },
+  { src:'images/1776547164130_0740da1d.jpeg', cap:'Öpücük ♡' },
+  { src:'images/1776547164135_43de34a7.jpeg', cap:'Yakın selfie ♡' },
+  { src:'images/1776547186173_a8d20931.jpeg', cap:'Kamelya ♡' },
+  { src:'images/1776547186176_82ed6e92.jpeg', cap:'Öpücük selfie ♡' },
+  { src:'images/1776547186178_04c1b6e4.jpeg', cap:'Kafe boyama ♡' },
+  { src:'images/1776547186180_1c3b3ecc.jpeg', cap:'Kafe boyama anısı ♡' },
+  { src:'images/1776547186183_f5d55df1.jpeg', cap:'Kafe selfie ♡' }
+];
+
+let curSlide    = 0;
+let galleryBuilt = false;
+let touchSX = 0;
+
+function openGallery() {
+  document.getElementById('page-gallery').classList.remove('hidden');
+  if (!galleryBuilt) buildGallery();
+  showSlide(0);
+}
+function closeGallery() {
+  document.getElementById('page-gallery').classList.add('hidden');
+}
+
+function buildGallery() {
+  galleryBuilt = true;
+  const wrap = document.getElementById('slideshow-wrap');
+  const dots  = document.getElementById('gallery-dots');
+
+  PHOTOS.forEach((ph, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'slide';
+    slide.innerHTML = `<img src="${ph.src}" alt="${ph.cap}" loading="lazy"><div class="slide-cap">${ph.cap}</div>`;
+    wrap.appendChild(slide);
+
+    const dot = document.createElement('div');
+    dot.className = 'g-dot';
+    dot.onclick = () => showSlide(i);
+    dots.appendChild(dot);
+  });
+
+  // Nav buttons
+  const prev = document.createElement('button');
+  prev.className = 'sl-nav sl-prev'; prev.innerHTML = '&#8249;';
+  prev.onclick = () => changeSlide(-1);
+  wrap.appendChild(prev);
+
+  const next = document.createElement('button');
+  next.className = 'sl-nav sl-next'; next.innerHTML = '&#8250;';
+  next.onclick = () => changeSlide(1);
+  wrap.appendChild(next);
+
+  // Touch / swipe
+  wrap.addEventListener('touchstart', e => { touchSX = e.touches[0].clientX; }, { passive: true });
+  wrap.addEventListener('touchend',   e => {
+    const diff = touchSX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 38) changeSlide(diff > 0 ? 1 : -1);
+  });
+
+  // Keyboard
+  document.addEventListener('keydown', e => {
+    if (document.getElementById('page-gallery').classList.contains('hidden')) return;
+    if (e.key === 'ArrowLeft')  changeSlide(-1);
+    if (e.key === 'ArrowRight') changeSlide(1);
+    if (e.key === 'Escape')     closeGallery();
+  });
+}
+
+function showSlide(n) {
+  curSlide = ((n % PHOTOS.length) + PHOTOS.length) % PHOTOS.length;
+  document.querySelectorAll('.slide').forEach((s,i) => s.classList.toggle('active', i === curSlide));
+  document.querySelectorAll('.g-dot').forEach((d,i) => d.classList.toggle('active', i === curSlide));
+  document.getElementById('gallery-ctr').textContent = (curSlide + 1) + ' / ' + PHOTOS.length;
+}
+function changeSlide(dir) { showSlide(curSlide + dir); }
+</script>
+</body>
+</html>
